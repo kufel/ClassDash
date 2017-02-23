@@ -1,4 +1,4 @@
-package csir515.classdash;
+package csit515.classdash;
 
 import org.junit.Test;
 

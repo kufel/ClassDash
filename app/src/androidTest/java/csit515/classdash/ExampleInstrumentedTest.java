@@ -1,4 +1,4 @@
-package csir515.classdash;
+package csit515.classdash;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("csir515.classdash", appContext.getPackageName());
+        assertEquals("csit515.classdash", appContext.getPackageName());
     }
 }

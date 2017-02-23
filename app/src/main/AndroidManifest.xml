@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="csir515.classdash">
+    package="csit515.classdash">
 
     <application
         android:allowBackup="true"
