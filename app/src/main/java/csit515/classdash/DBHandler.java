@@ -123,6 +123,11 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public int numberOfRows(String table) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return (int) DatabaseUtils.queryNumEntries(db, table);
+    }
+
     public boolean insertUser(String name, String email, String pass, String classes, int permsn){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
@@ -142,18 +147,13 @@ public class DBHandler extends SQLiteOpenHelper {
         cv.put(USERPRO_C_EMAIL, email);
         cv.put(USERPRO_C_PASSWORD, pass);
         cv.put(USERPRO_C_CLASEES, classes);
-        db.update(USERPRO_TABLE, cv, "id = ? ", new String[] { Integer.toString(id) } );
+        db.update(USERPRO_TABLE, cv, USERPRO_C_ID+" = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
     public int deleteUser(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         return db.delete(USERPRO_TABLE, "id = ?", new String[] { Integer.toString(id) } );
-    }
-
-    public int numberOfRows(String table) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        return (int) DatabaseUtils.queryNumEntries(db, table);
     }
 
     public ArrayList<String> getAllUsers(){
@@ -164,7 +164,203 @@ public class DBHandler extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(USERPRO_TABLE)));
+            list.add(res.getString(res.getColumnIndex(USERPRO_C_ID)));
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertForum(String auth, String title, String body){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(FORUMS_C_AUTHOR, auth);
+        cv.put(FORUMS_C_TITLE, title);
+        cv.put(FORUMS_C_BODY, body);
+        db.insert(FORUMS_TABLE, null, cv);
+        return true;
+    }
+
+    public boolean updateForum(int id, String title, String body){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(FORUMS_C_TITLE, title);
+        cv.put(FORUMS_C_BODY, body);
+        db.update(FORUMS_TABLE, cv, FORUMS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
+
+    public int deleteForum(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(CLASSES_TABLE, FORUMS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+    }
+
+    public ArrayList<String> getAllForums(){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+FORUMS_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(FORUMS_C_ID)));
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertAssignment(int stid, int cid, int comp, int grade){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ASSIGNMENTS_C_STUID, stid);
+        cv.put(ASSIGNMENTS_C_CLASSID, cid);
+        cv.put(ASSIGNMENTS_C_COMP, comp);
+        cv.put(ASSIGNMENTS_C_GRADE, grade);
+        db.insert(CLASSES_TABLE, null, cv);
+        return true;
+    }
+
+    public boolean updateClass(int id, int stid, int cid, int comp, double grade){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ASSIGNMENTS_C_STUID, stid);
+        cv.put(ASSIGNMENTS_C_CLASSID, cid);
+        cv.put(ASSIGNMENTS_C_COMP, comp);
+        cv.put(ASSIGNMENTS_C_GRADE, grade);
+        db.update(CLASSES_TABLE, cv, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+        return true;
+    }
+
+    public int deleteAssignment(int cid, int stid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(CLASSES_TABLE, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+    }
+
+    public ArrayList<String> getAllAssigments(){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ASSIGNMENTS_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(ASSIGNMENTS_C_ID)));
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertRoster(int cid, int stid, int tid, double grade){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ROSTER_C_CLASSID, cid);
+        cv.put(ROSTER_C_STUID, stid);
+        cv.put(ROSTER_C_TEACHID, tid);
+        cv.put(ROSTER_C_GRADE, grade);
+        db.insert(ROSTER_TABLE, null, cv);
+        return true;
+    }
+
+    public boolean updateRoster(int cid, int stid, int tid, double grade){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ROSTER_C_TEACHID, tid);
+        cv.put(ROSTER_C_GRADE, grade);
+        db.update(ROSTER_TABLE, cv, ROSTER_C_CLASSID+" = ? and "+ROSTER_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+        return true;
+    }
+
+    public int deleteRoster(int cid, int stid){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(ROSTER_TABLE, ROSTER_C_CLASSID+" = ? and "+ROSTER_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+    }
+
+    public ArrayList<String> getAllRoster(){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+ROSTER_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(ROSTER_C_CLASSID))+"__"+res.getString(res.getColumnIndex(ROSTER_C_STUID)));
+            res.moveToNext();
+        }
+        return list;
+    }
+    public boolean insertClass(String name, int tid, String assgnmts, String tutormat){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CLASSES_C_NAME, name);
+        cv.put(CLASSES_C_TEACHERID, tid);
+        cv.put(CLASSES_C_ASSIGNMENTS, assgnmts);
+        cv.put(CLASSES_C_TUTORMAT, tutormat);
+        db.insert(CLASSES_TABLE, null, cv);
+        return true;
+    }
+
+    public boolean updateClass(int id, String name, int tid, String assgnmts, String tutormat){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CLASSES_C_NAME, name);
+        cv.put(CLASSES_C_TEACHERID, tid);
+        cv.put(CLASSES_C_ASSIGNMENTS, assgnmts);
+        cv.put(CLASSES_C_TUTORMAT, tutormat);
+        db.update(CLASSES_TABLE, cv, CLASSES_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
+
+    public int deleteClass(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(CLASSES_TABLE, CLASSES_C_ID+" = ?", new String[] { Integer.toString(id) } );
+    }
+
+    public ArrayList<String> getAllClasses(){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+CLASSES_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(CLASSES_C_ID)));
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertPost(int fid, int order, String auth, String body){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(POSTS_C_FID, fid);
+        cv.put(POSTS_C_ORDER, order);
+        cv.put(POSTS_C_AUTHOR, auth);
+        cv.put(POSTS_C_BODY, body);
+        db.insert(POSTS_TABLE, null, cv);
+        return true;
+    }
+
+    public boolean updatePost(int id, String body){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(FORUMS_C_BODY, body);
+        db.update(FORUMS_TABLE, cv, POSTS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
+
+    public int deletePost(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.delete(CLASSES_TABLE, POSTS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+    }
+
+    public ArrayList<String> getAllPosts(){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+POSTS_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(POSTS_C_ID)));
             res.moveToNext();
         }
         return list;
