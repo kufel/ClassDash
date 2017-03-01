@@ -4,6 +4,8 @@ import android.app.Fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,9 @@ public class FragmentProfile extends Fragment {
     private DBHandler mydb;
     private EditText firstName;
     private EditText lastName;
+    private EditText email;
     private EditText password;
+    private Button buttonSave;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,7 +39,9 @@ public class FragmentProfile extends Fragment {
         mydb = new DBHandler(getActivity());
         firstName = (EditText) root.findViewById(R.id.editTextFirstName);
         lastName = (EditText) root.findViewById(R.id.editTextLastName);
+        email = (EditText) root.findViewById(R.id.editTextEmail);
         password = (EditText) root.findViewById(R.id.editTextPassword);
+        buttonSave = (Button) root.findViewById(R.id.buttonSave);
     }
 
     private void loadSQL() {
@@ -45,10 +51,24 @@ public class FragmentProfile extends Fragment {
         rs.moveToFirst();
         firstName.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_FIRST_NAME)));
         lastName.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_LAST_NAME)));
+        email.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_EMAIL)));
         password.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_PASSWORD)));
         if (!rs.isClosed())  {
             rs.close();
         }
+    }
+
+    private void onChangeListener() {
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mydb.updateUser(1,
+                                firstName.getText().toString(),
+                                lastName.getText().toString(),
+                                email.getText().toString(),
+                                password.getText().toString(),
+                                "");
+            }
+        });
     }
     /**
      * Use this factory method to create a new instance of
@@ -74,13 +94,13 @@ public class FragmentProfile extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_fragment_profile, container, false);
         root = rootView;
         setupFrag();
         loadSQL();
+        onChangeListener();
         return rootView;
     }
 
@@ -122,4 +142,5 @@ public class FragmentProfile extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

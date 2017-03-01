@@ -40,11 +40,26 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/editTextEmail"
+                android:text="Email"
+                android:textAlignment="center" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/editTextPassword"
                 android:text="Password"
                 android:textAlignment="center" />
+
+            <Button
+                android:text="Save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonSave" />
         </LinearLayout>
 
     </FrameLayout>
