@@ -4,25 +4,24 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
-
-import butterknife.BindView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentLogout.OnFragmentInteractionListener} interface
+ * {@link FragmentLogin.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentLogout#newInstance} factory method to
+ * Use the {@link FragmentLogin#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentLogout extends Fragment {
+public class FragmentLogin extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,7 +34,10 @@ public class FragmentLogout extends Fragment {
     private OnFragmentInteractionListener mListener;
     private View root;
 
-    public FragmentLogout() {
+    private EditText usertxt, passtxt;
+    private Button loginbtn, regbtn;
+
+    public FragmentLogin() {
         // Required empty public constructor
     }
 
@@ -48,8 +50,8 @@ public class FragmentLogout extends Fragment {
      * @return A new instance of fragment FragmentDashboard.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentLogout newInstance(String param1, String param2) {
-        FragmentLogout fragment = new FragmentLogout();
+    public static FragmentLogin newInstance(String param1, String param2) {
+        FragmentLogin fragment = new FragmentLogin();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,15 +66,38 @@ public class FragmentLogout extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+    }
+
+    private void setUpFrag() {
+        usertxt = (EditText) root.findViewById(R.id.li_user_edittxt);
+        passtxt = (EditText) root.findViewById(R.id.li_pass_edtxt);
+        loginbtn = (Button) root.findViewById(R.id.li_login_btn);
+        regbtn = (Button) root.findViewById(R.id.li_reg_btn);
+
+        loginbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean match = false;
+
+
+
+                if(match){
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.mainFrame, new FragmentDashboard());
+                    ft.commit();
+                }
+            }
+        });
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_fragment_logout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_fragment_login, container, false);
         root = rootView;
-        setLogoutButton();
+        setUpFrag();
         return rootView;
     }
 
@@ -113,18 +138,5 @@ public class FragmentLogout extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    private void setLogoutButton(){
-        Button loBtn = (Button) root.findViewById(R.id.lof_btn);
-        loBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(root.getContext(), "Successfully Logged Out!", Toast.LENGTH_LONG);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.mainFrame, new FragmentLogin());
-                ft.commit();
-            }
-        });
     }
 }
