@@ -16,13 +16,15 @@ import java.util.ArrayList;
 public class DBHandler extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "ClassDash.db";
-    public static final String USERPRO_TABLE = "User_Profile";
-    public static final String USERPRO_C_ID = "ID";
-    public static final String USERPRO_C_NAME = "Name";
-    public static final String USERPRO_C_EMAIL = "Email";
-    public static final String USERPRO_C_PASSWORD = "Password";
-    public static final String USERPRO_C_CLASEES = "Classes";
-    public static final String USERPRO_C_PERMISSION = "Permissions";
+
+    public static final String USERS_TABLE = "Users";
+    public static final String USERS_C_ID = "ID";
+    public static final String USERS_C_FIRST_NAME = "First_Name";
+    public static final String USERS_C_LAST_NAME = "Last_Name";
+    public static final String USERS_C_EMAIL = "Email";
+    public static final String USERS_C_PASSWORD = "Password";
+    public static final String USERS_C_CLASEES = "Classes";
+    public static final String USERS_C_PERMISSION = "Permissions";
 
     public static final String CLASSES_TABLE = "Classes";
     public static final String CLASSES_C_ID = "ID";
@@ -63,13 +65,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTables = "create table "+USERPRO_TABLE+" " +
-                "("+USERPRO_C_ID+" integer primary key, "+
-                USERPRO_C_NAME+" text, "+
-                USERPRO_C_EMAIL+" text, "+
-                USERPRO_C_PASSWORD+" text, "+
-                USERPRO_C_CLASEES+" text, "+
-                USERPRO_C_PERMISSION+" integer)";
+        String createTables = "create table "+USERS_TABLE+" " +
+                "("+USERS_C_ID+" integer primary key, "+
+                USERS_C_FIRST_NAME+" text, "+
+                USERS_C_LAST_NAME+" text, "+
+                USERS_C_EMAIL+" text, "+
+                USERS_C_PASSWORD+" text, "+
+                USERS_C_CLASEES+" text, "+
+                USERS_C_PERMISSION+" integer)";
         db.execSQL(createTables);
 
         createTables = "create table "+CLASSES_TABLE+" "+
@@ -82,7 +85,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         createTables = "create table "+ASSIGNMENTS_TABLE+" ("+
                 ASSIGNMENTS_C_ID+" integer primary key, "+
-                ASSIGNMENTS_C_STUID+" integer primary key, "+
+                ASSIGNMENTS_C_STUID+" integer, "+
                 ASSIGNMENTS_C_CLASSID+" integer, "+
                 ASSIGNMENTS_C_COMP+" integer, "+
                 ASSIGNMENTS_C_GRADE+ " real)";
@@ -90,7 +93,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         createTables = "create table "+ROSTER_TABLE+" ("+
                 ROSTER_C_CLASSID+" integer primary key, "+
-                ROSTER_C_STUID+" integer primary key, "+
+                ROSTER_C_STUID+" integer, "+
                 ROSTER_C_TEACHID+" integer, "+
                 ROSTER_C_GRADE+" real)";
         db.execSQL(createTables);
@@ -113,7 +116,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+USERPRO_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS "+USERS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+CLASSES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ASSIGNMENTS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ROSTER_TABLE);
@@ -128,43 +131,51 @@ public class DBHandler extends SQLiteOpenHelper {
         return (int) DatabaseUtils.queryNumEntries(db, table);
     }
 
-    public boolean insertUser(String name, String email, String pass, String classes, int permsn){
+    public Cursor getUser(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM "+USERS_TABLE+" WHERE "+USERS_C_ID+" = " + id + "", null );
+        return res;
+    }
+
+    public boolean insertUser(String firstName, String lastName, String email, String pass, String classes, int permsn) {
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(USERPRO_C_NAME, name);
-        cv.put(USERPRO_C_EMAIL, email);
-        cv.put(USERPRO_C_PASSWORD, pass);
-        cv.put(USERPRO_C_CLASEES, classes);
-        cv.put(USERPRO_C_PERMISSION, permsn);
-        db.insert(USERPRO_TABLE, null, cv);
+        cv.put(USERS_C_FIRST_NAME, firstName);
+        cv.put(USERS_C_LAST_NAME, lastName);
+        cv.put(USERS_C_EMAIL, email);
+        cv.put(USERS_C_PASSWORD, pass);
+        cv.put(USERS_C_CLASEES, classes);
+        cv.put(USERS_C_PERMISSION, permsn);
+        db.insert(USERS_TABLE, null, cv);
         return true;
     }
 
-    public boolean updateUser(int id, String name, String email, String pass, String classes){
+    public boolean updateUser(int id, String firstName, String lastName, String email, String pass, String classes){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(USERPRO_C_NAME, name);
-        cv.put(USERPRO_C_EMAIL, email);
-        cv.put(USERPRO_C_PASSWORD, pass);
-        cv.put(USERPRO_C_CLASEES, classes);
-        db.update(USERPRO_TABLE, cv, USERPRO_C_ID+" = ? ", new String[] { Integer.toString(id) } );
+        cv.put(USERS_C_FIRST_NAME, firstName);
+        cv.put(USERS_C_LAST_NAME, lastName);
+        cv.put(USERS_C_EMAIL, email);
+        cv.put(USERS_C_PASSWORD, pass);
+        cv.put(USERS_C_CLASEES, classes);
+        db.update(USERS_TABLE, cv, USERS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
     public int deleteUser(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.delete(USERPRO_TABLE, "id = ?", new String[] { Integer.toString(id) } );
+        return db.delete(USERS_TABLE, "id = ?", new String[] { Integer.toString(id) } );
     }
 
     public ArrayList<String> getAllUsers(){
         ArrayList<String> list = new ArrayList<String>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+USERPRO_TABLE, null );
+        Cursor res =  db.rawQuery( "select * from "+USERS_TABLE, null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(USERPRO_C_ID)));
+            list.add(res.getString(res.getColumnIndex(USERS_C_ID)));
             res.moveToNext();
         }
         return list;

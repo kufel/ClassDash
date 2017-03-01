@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.mainFrame, fragment);
         ft.commit();
 
+        // clear db
+        DBHandler mydb = new DBHandler(this);
+        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
     }
 
     @Override
