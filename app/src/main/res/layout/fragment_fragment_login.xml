@@ -35,10 +35,11 @@
             android:textSize="15sp"
             android:text="Username:"/>
         <EditText
-            android:id="@+id/li_user_edittxt"
+            android:id="@+id/li_email_edittxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter Username..."/>
+            android:inputType="textEmailAddress"
+            android:hint="Enter Email..."/>
         <Space
             android:layout_width="wrap_content"
             android:layout_height="20sp" />
@@ -51,6 +52,7 @@
             android:id="@+id/li_pass_edtxt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
             android:hint="Enter Password..."/>
         <Space
             android:layout_width="wrap_content"

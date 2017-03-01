@@ -2,8 +2,10 @@ package csit515.classdash;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 
 /**
@@ -34,8 +39,9 @@ public class FragmentLogin extends Fragment {
     private OnFragmentInteractionListener mListener;
     private View root;
 
-    private EditText usertxt, passtxt;
+    private EditText emailtxt, passtxt;
     private Button loginbtn, regbtn;
+    private DBHandler mybd;
 
     public FragmentLogin() {
         // Required empty public constructor
@@ -70,22 +76,37 @@ public class FragmentLogin extends Fragment {
     }
 
     private void setUpFrag() {
-        usertxt = (EditText) root.findViewById(R.id.li_user_edittxt);
+        emailtxt = (EditText) root.findViewById(R.id.li_email_edittxt);
         passtxt = (EditText) root.findViewById(R.id.li_pass_edtxt);
         loginbtn = (Button) root.findViewById(R.id.li_login_btn);
         regbtn = (Button) root.findViewById(R.id.li_reg_btn);
+        mybd = new DBHandler(getActivity());
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean match = false;
 
+                ArrayList<String> lUsers = mybd.getAllUsers();
+                for(String s:lUsers){
+                    Cursor rs = mybd.getUser(Integer.parseInt(s));
+                    rs.moveToFirst();
+                    String testEmail = rs.getString(rs.getColumnIndex(mybd.USERS_C_EMAIL));
+                    String testPass = rs.getString(rs.getColumnIndex(mybd.USERS_C_PASSWORD));
 
+                    if(testEmail.equals(emailtxt.getText().toString()) && testPass.equals(passtxt.getText().toString())){
+                        match = true;
+                        break;
+                    }
+                }
 
                 if(match){
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.mainFrame, new FragmentDashboard());
                     ft.commit();
+                }
+                else{
+                    Snackbar.make(root, "Invalid Email and/or Password", Snackbar.LENGTH_LONG).show();
                 }
             }
         });

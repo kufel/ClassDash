@@ -120,7 +120,7 @@ public class FragmentLogout extends Fragment {
         loBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(root.getContext(), "Successfully Logged Out!", Toast.LENGTH_LONG);
+                Snackbar.make(root, "Successfully Logge Out!", Snackbar.LENGTH_LONG).show();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.mainFrame, new FragmentLogin());
                 ft.commit();
