@@ -5,10 +5,6 @@
     tools:context="csit515.classdash.FragmentProfile">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Profile Fragment" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,6 +15,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:text="First Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView2" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -27,6 +29,12 @@
                 android:ems="10"
                 android:id="@+id/editTextFirstName"
                 android:textAlignment="center" />
+
+            <TextView
+                android:text="Last Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -37,6 +45,12 @@
                 android:id="@+id/editTextLastName"
                 android:textAlignment="center" />
 
+            <TextView
+                android:text="Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView5" />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,6 +59,12 @@
                 android:id="@+id/editTextEmail"
                 android:text="Email"
                 android:textAlignment="center" />
+
+            <TextView
+                android:text="Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView6" />
 
             <EditText
                 android:layout_width="match_parent"

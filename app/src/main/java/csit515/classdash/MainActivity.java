@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
 
         // clear db
-        DBHandler mydb = new DBHandler(this);
-        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
+//        DBHandler mydb = new DBHandler(this);
+//        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
     }
 
     @Override
