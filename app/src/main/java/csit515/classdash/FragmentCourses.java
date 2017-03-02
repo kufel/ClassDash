@@ -1,11 +1,18 @@
 package csit515.classdash;
 
 import android.app.Fragment;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -17,19 +24,29 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class FragmentCourses extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private View root;
+    private DBHandler mydb;
+    private ListView listView;
 
     private OnFragmentInteractionListener mListener;
 
     public FragmentCourses() {
         // Required empty public constructor
+    }
+
+    private void setupFrag() {
+        mydb = new DBHandler(getActivity());
+        listView = (ListView) root.findViewById(R.id.listViewCourses);
+    }
+
+    private void loadSQL() {
+        ArrayList<String> list = mydb.getAllClasses();
+        String[] listItems = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            listItems[i] = list.get(i);
+        }
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
+        listView.setAdapter(adapter);
     }
 
     /**
@@ -44,8 +61,7 @@ public class FragmentCourses extends Fragment {
     public static FragmentCourses newInstance(String param1, String param2) {
         FragmentCourses fragment = new FragmentCourses();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,17 +69,16 @@ public class FragmentCourses extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_courses, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_fragment_courses, container, false);
+        root = rootView;
+        setupFrag();
+        loadSQL();
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

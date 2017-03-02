@@ -45,8 +45,6 @@ public class FragmentProfile extends Fragment {
     }
 
     private void loadSQL() {
-        mydb.insertUser("Nick", "Garcia", "nick@aol.com", "pass", "", 1);
-
         Cursor rs = mydb.getUser(1);
         rs.moveToFirst();
         firstName.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_FIRST_NAME)));
@@ -70,6 +68,7 @@ public class FragmentProfile extends Fragment {
             }
         });
     }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -88,9 +87,6 @@ public class FragmentProfile extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            //   mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override

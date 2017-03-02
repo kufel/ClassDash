@@ -5,9 +5,10 @@
     tools:context="csit515.classdash.FragmentCourses">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Courses Fragment" />
+        android:id="@+id/listViewCourses" />
 
 </FrameLayout>

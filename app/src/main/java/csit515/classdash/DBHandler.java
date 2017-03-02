@@ -333,7 +333,7 @@ public class DBHandler extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(CLASSES_C_ID)));
+            list.add(res.getString(res.getColumnIndex(CLASSES_C_NAME)));
             res.moveToNext();
         }
         return list;
