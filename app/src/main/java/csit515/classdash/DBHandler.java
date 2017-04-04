@@ -181,6 +181,20 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public ArrayList<String> getAllUsers(String col) {
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+USERS_TABLE, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(col)));
+            res.moveToNext();
+        }
+        return list;
+    }
+
     public boolean insertForum(String auth, String title, String body){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();

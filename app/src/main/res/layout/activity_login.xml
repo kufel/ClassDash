@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#b9dcff"
+    tools:context="csit515.classdash.Login">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Welccome To ClassDash" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="30sp" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="2"
+        android:scaleY="2"
+        android:src="@mipmap/ic_launcher"/>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Username:"/>
+    <EditText
+        android:id="@+id/li_email_edittxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="Enter Email..."/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="Password:"/>
+    <EditText
+        android:id="@+id/li_pass_edtxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="Enter Password..."/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/li_login_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#54ffcc"
+            android:text="Login"/>
+        <Space
+            android:layout_width="20sp"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/li_reg_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#54ffcc"
+            android:onClick="register"
+            android:text="Register"/>
+
+    </LinearLayout>
+</LinearLayout>

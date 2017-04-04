@@ -10,4 +10,11 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lof_text">Click Here to Logout</string>
     <string name="lof_btntxt">Logout</string>
+    <string name="errmsg1_reg">Please fill out every field in the form</string>
+    <string name="errmsg2_reg">Invalid MSU email</string>
+    <string name="errmsg3_reg">Password must be at least 6 characters</string>
+    <string name="errmsg4_reg">Password do not match</string>
+    <string name="success_reg">Account Registered!</string>
+    <string name="ermsg5_reg">Password must contain at least one number and one letter</string>
+    <string name="ermsg6_reg">Username is Already Taken!</string>
 </resources>

@@ -121,9 +121,7 @@ public class FragmentLogout extends Fragment {
             @Override
             public void onClick(View v) {
                 Snackbar.make(root, "Successfully Logge Out!", Snackbar.LENGTH_LONG).show();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.mainFrame, new FragmentLogin());
-                ft.commit();
+                getActivity().finish();
             }
         });
     }
