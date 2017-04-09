@@ -1,12 +1,14 @@
 package csit515.classdash;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +51,16 @@ public class FragmentCourses extends Fragment {
         listView.setAdapter(adapter);
     }
 
+    private void run() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                Intent intent = new Intent(getActivity(), CourseActivity.class);
+                intent.putExtra("course_id", arg3);
+                startActivity(intent);
+            }
+        });
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -78,6 +90,7 @@ public class FragmentCourses extends Fragment {
         root = rootView;
         setupFrag();
         loadSQL();
+        run();
         return rootView;
     }
 

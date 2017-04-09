@@ -15,6 +15,7 @@ public class SQL {
     }
 
     private void userSQL() {
+        //mydb.insertUser("Test", "Test", "test@test.com", "pass", "", 1);
         mydb.insertUser("Nick", "Garcia", "nick@aol.com", "pass", "", 1);
         mydb.insertUser("Josh", "Garcia", "josh@gmail.com", "pass", "", 1);
     }

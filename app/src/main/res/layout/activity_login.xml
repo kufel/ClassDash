@@ -31,12 +31,14 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:text="Username:"/>
+
     <EditText
         android:id="@+id/li_email_edittxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Enter Email..."
         android:inputType="textEmailAddress"
-        android:hint="Enter Email..."/>
+        android:text="josh@gmail.com" />
     <Space
         android:layout_width="wrap_content"
         android:layout_height="20sp" />
@@ -45,12 +47,14 @@
         android:layout_height="wrap_content"
         android:textSize="15sp"
         android:text="Password:"/>
+
     <EditText
         android:id="@+id/li_pass_edtxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="Enter Password..."
         android:inputType="textPassword"
-        android:hint="Enter Password..."/>
+        android:text="pass" />
     <Space
         android:layout_width="wrap_content"
         android:layout_height="20sp" />
