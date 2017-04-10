@@ -264,7 +264,7 @@ public class DBHandler extends SQLiteOpenHelper {
         ArrayList<String> list = new ArrayList<String>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+ASSIGNMENTS_TABLE, null );
+        Cursor res =  db.rawQuery( "select * from " + ASSIGNMENTS_TABLE, null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){

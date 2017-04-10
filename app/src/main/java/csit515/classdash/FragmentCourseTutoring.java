@@ -1,74 +1,40 @@
 package csit515.classdash;
 
 import android.app.Fragment;
-import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-
-import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentCourses.OnFragmentInteractionListener} interface
+ * {@link FragmentCourseTutoring.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentCourses#newInstance} factory method to
+ * Use the {@link FragmentCourseTutoring#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentCourses extends Fragment {
+public class FragmentCourseTutoring extends Fragment {
     private View root;
     private DBHandler mydb;
-    private ListView listView;
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentCourses() {
+    public FragmentCourseTutoring() {
         // Required empty public constructor
     }
 
     private void setupFrag() {
         mydb = new DBHandler(getActivity());
-        listView = (ListView) root.findViewById(R.id.listViewCourses);
     }
 
     private void loadSQL() {
-        ArrayList<String> list = mydb.getAllClasses();
-        String[] listItems = new String[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            listItems[i] = list.get(i);
-        }
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
-        listView.setAdapter(adapter);
     }
 
     private void run() {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                Intent intent = new Intent(getActivity(), CourseActivity.class);
-//                intent.putExtra("course_id", arg3);
-//                startActivity(intent);
-//            }
-//        });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                FragmentCourse nextFrag = new FragmentCourse();
-                getActivity().getFragmentManager().beginTransaction()
-                        .replace(R.id.mainFrame, nextFrag, null)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
     }
 
     /**
@@ -80,8 +46,8 @@ public class FragmentCourses extends Fragment {
      * @return A new instance of fragment FragmentDashboard.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentCourses newInstance(String param1, String param2) {
-        FragmentCourses fragment = new FragmentCourses();
+    public static FragmentCourseTutoring newInstance(String param1, String param2) {
+        FragmentCourseTutoring fragment = new FragmentCourseTutoring();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
         fragment.setArguments(args);
@@ -96,7 +62,7 @@ public class FragmentCourses extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_fragment_courses, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_fragment_tutoring, container, false);
         root = rootView;
         setupFrag();
         loadSQL();

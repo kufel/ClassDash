@@ -26,9 +26,21 @@ public class SQL {
         mydb.insertClass("Java 103", 0, "Assigments3", "Tutorial3");
         mydb.insertClass("Java 104", 0, "Assigments4", "Tutorial4");
         mydb.insertClass("Java 105", 0, "Assigments5", "Tutorial5");
+        mydb.insertClass("Java 201", 0, "Assigments1", "Tutorial1");
+        mydb.insertClass("Java 202", 0, "Assigments2", "Tutorial2");
+        mydb.insertClass("Java 203", 0, "Assigments3", "Tutorial3");
+        mydb.insertClass("Java 204", 0, "Assigments4", "Tutorial4");
+        mydb.insertClass("Java 205", 0, "Assigments5", "Tutorial5");
     }
 
-    private void assignmentsSQL() {
-        //mydb.insertAssignment();
-    }
+//    private void assignmentsSQL() {
+//        mydb.deleteAssignment(1, 1, 1, 0, 0);
+//    }
+
+    public static final String ASSIGNMENTS_TABLE = "Assignments";
+    public static final String ASSIGNMENTS_C_ID = "Assignment_ID";
+    public static final String ASSIGNMENTS_C_STUID = "Student_ID";
+    public static final String ASSIGNMENTS_C_CLASSID = "Class_ID";
+    public static final String ASSIGNMENTS_C_COMP = "Complete";
+    public static final String ASSIGNMENTS_C_GRADE = "GRADE";
 }
