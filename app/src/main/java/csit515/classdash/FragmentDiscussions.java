@@ -1,11 +1,24 @@
 package csit515.classdash;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -26,10 +39,72 @@ public class FragmentDiscussions extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private View root;
+    private DBHandler mydb;
+    private ListView listView;
+    ArrayList<String> keyList;
+
     private OnFragmentInteractionListener mListener;
 
     public FragmentDiscussions() {
         // Required empty public constructor
+    }
+
+    private void setupFrag() {
+        mydb = new DBHandler(getActivity());
+        listView = (ListView) root.findViewById(R.id.discussion_topics);
+        keyList = new ArrayList<>();
+    }
+
+    private void loadSQL() {
+        keyList.clear();
+        HashMap<String, String> map = mydb.getAllForums();
+        ArrayList<String> listItems = new ArrayList<>();
+        for (String key : map.keySet()) {
+            listItems.add(map.get(key));
+            keyList.add(key);
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, listItems);
+        listView.setAdapter(adapter);
+    }
+
+    private void run() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+                FragmentForum nextFrag = FragmentForum.newInstance(keyList.get(pos));
+                getActivity().getFragmentManager().beginTransaction()
+                        .replace(R.id.mainFrame, nextFrag, null)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+        Button newForumBtn = (Button) root.findViewById(R.id.new_forum_btn);
+        newForumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View viewGrp = getActivity().getLayoutInflater().inflate(R.layout.new_forum_form, (ViewGroup) root.findViewById(R.id.discussion_frame), false);
+                final View thisview = v;
+
+                final EditText title = (EditText) viewGrp.findViewById(R.id.new_title);
+                final EditText body = (EditText) viewGrp.findViewById(R.id.new_body);
+                AlertDialog.Builder alertBuilder = new AlertDialog.Builder(getActivity())
+                        .setTitle("New Topic").setView(viewGrp)
+                        .setPositiveButton("Post", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Login.SHPR, Context.MODE_APPEND);
+                                mydb.insertForum(sharedPreferences.getString(Login.CURRUSER, "user"), title.getText().toString(), body.getText().toString());
+                                loadSQL();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Snackbar.make(thisview, "Topic Cancelled", Snackbar.LENGTH_SHORT).show();
+                            }
+                        });
+                alertBuilder.show();
+            }
+        });
     }
 
     /**
@@ -63,7 +138,12 @@ public class FragmentDiscussions extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_fragment_discussions, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_fragment_discussions, container, false);
+        root = rootView;
+        setupFrag();
+        loadSQL();
+        run();
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

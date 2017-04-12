@@ -12,6 +12,7 @@ public class SQL {
         mydb = db;
         userSQL();
         classesSQL();
+        forumsSQL();
     }
 
     private void userSQL() {
@@ -31,6 +32,10 @@ public class SQL {
         mydb.insertClass("Java 203", 0, "Assigments3", "Tutorial3");
         mydb.insertClass("Java 204", 0, "Assigments4", "Tutorial4");
         mydb.insertClass("Java 205", 0, "Assigments5", "Tutorial5");
+    }
+
+    private void forumsSQL(){
+        mydb.insertForum("nick@aol.com", "Help with Data Structures", "I need help understanding the concept of Big O. Like how do you measure the time complexity of an algorithm?");
     }
 
 //    private void assignmentsSQL() {

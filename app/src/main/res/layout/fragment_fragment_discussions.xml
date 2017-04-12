@@ -2,12 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/discussion_frame"
     tools:context="csit515.classdash.FragmentDiscussions">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Discussions Fragment" />
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
+        <TextView
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Topics of Discussion"
+            style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_weight="3"/>
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:text="New Forum"
+            android:layout_weight="2"
+            android:id="@+id/new_forum_btn"/>
+    </LinearLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/discussion_topics"/>
+    </LinearLayout>
 </FrameLayout>

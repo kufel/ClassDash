@@ -1,9 +1,12 @@
 package csit515.classdash;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -28,6 +31,8 @@ public class FragmentProfile extends Fragment {
     private EditText email;
     private EditText password;
     private Button buttonSave;
+    private String classes;
+    private int id;
 
     private OnFragmentInteractionListener mListener;
 
@@ -45,12 +50,15 @@ public class FragmentProfile extends Fragment {
     }
 
     private void loadSQL() {
-        Cursor rs = mydb.getUser(1);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences(Login.SHPR, Context.MODE_APPEND);
+        Cursor rs = mydb.getUser(sharedPreferences.getString(Login.CURRUSER, "user"));
         rs.moveToFirst();
         firstName.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_FIRST_NAME)));
         lastName.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_LAST_NAME)));
         email.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_EMAIL)));
         password.setText(rs.getString(rs.getColumnIndex(DBHandler.USERS_C_PASSWORD)));
+        classes = rs.getString(rs.getColumnIndex(DBHandler.USERS_C_CLASEES));
+        id = rs.getInt(rs.getColumnIndex(DBHandler.USERS_C_ID));
         if (!rs.isClosed())  {
             rs.close();
         }
@@ -59,12 +67,13 @@ public class FragmentProfile extends Fragment {
     private void onChangeListener() {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mydb.updateUser(1,
+                mydb.updateUser(id,
                                 firstName.getText().toString(),
                                 lastName.getText().toString(),
                                 email.getText().toString(),
                                 password.getText().toString(),
-                                "");
+                                classes);
+                Snackbar.make(v, "Profile updated", Snackbar.LENGTH_LONG).show();
             }
         });
     }

@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Rixoro on 2/27/2017.
@@ -137,6 +138,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return res;
     }
 
+    public Cursor getUser(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM "+USERS_TABLE+" WHERE "+USERS_C_EMAIL+" = '" + email + "'", null );
+        return res;
+    }
+
     public boolean insertUser(String firstName, String lastName, String email, String pass, String classes, int permsn) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -195,6 +202,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public Cursor getForum(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM "+FORUMS_TABLE+" WHERE "+FORUMS_C_ID+" = " + id + "", null );
+        return res;
+    }
+
     public boolean insertForum(String auth, String title, String body){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
@@ -219,15 +232,15 @@ public class DBHandler extends SQLiteOpenHelper {
         return db.delete(CLASSES_TABLE, FORUMS_C_ID+" = ? ", new String[] { Integer.toString(id) } );
     }
 
-    public ArrayList<String> getAllForums(){
-        ArrayList<String> list = new ArrayList<String>();
+    public HashMap<String, String> getAllForums(){
+        HashMap<String, String> list = new HashMap<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from "+FORUMS_TABLE, null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(FORUMS_C_ID)));
+            list.put(res.getString(res.getColumnIndex(FORUMS_C_ID)), res.getString(res.getColumnIndex(FORUMS_C_TITLE)));
             res.moveToNext();
         }
         return list;
@@ -389,6 +402,13 @@ public class DBHandler extends SQLiteOpenHelper {
             res.moveToNext();
         }
         return list;
+    }
+    public Cursor getAllPostsofForum(String fid){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from "+POSTS_TABLE+" where "+POSTS_C_FID+"= ? order by "+POSTS_C_ORDER, new String[]{ fid });
+
+        return res;
     }
 
 }
