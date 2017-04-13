@@ -24,10 +24,16 @@ public class Login extends AppCompatActivity {
     SharedPreferences.Editor editor;
     public static String SHPR = "CLASSDASHSHPREFS";
     public static String CURRUSER = "CURRUSER";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // clear db
+        DBHandler mydb = new DBHandler(this);
+        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
+        SQL sql = new SQL(mydb);
 
         Stetho.initializeWithDefaults(this);
 
