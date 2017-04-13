@@ -12,7 +12,9 @@ public class SQL {
         mydb = db;
         userSQL();
         classesSQL();
+        tutoringSQL();
         forumsSQL();
+        assignmentsSQL();
     }
 
     private void userSQL() {
@@ -22,25 +24,42 @@ public class SQL {
     }
 
     private void classesSQL() {
-        mydb.insertClass("Java 101", 0, "Assigments1", "Tutorial1");
-        mydb.insertClass("Java 102", 0, "Assigments2", "Tutorial2");
-        mydb.insertClass("Java 103", 0, "Assigments3", "Tutorial3");
-        mydb.insertClass("Java 104", 0, "Assigments4", "Tutorial4");
-        mydb.insertClass("Java 105", 0, "Assigments5", "Tutorial5");
-        mydb.insertClass("Java 201", 0, "Assigments1", "Tutorial1");
-        mydb.insertClass("Java 202", 0, "Assigments2", "Tutorial2");
-        mydb.insertClass("Java 203", 0, "Assigments3", "Tutorial3");
-        mydb.insertClass("Java 204", 0, "Assigments4", "Tutorial4");
-        mydb.insertClass("Java 205", 0, "Assigments5", "Tutorial5");
+        mydb.insertClass("Software Engineering", 0, " ", " ");
+        mydb.insertClass("Statistics", 0, " ", " ");
+        mydb.insertClass("Physics", 0, " ", " ");
+    }
+
+    private void tutoringSQL() {
+        mydb.insertTutoring(1, "Tutorial 1-1");
+        mydb.insertTutoring(1, "Tutorial 1-2");
+        mydb.insertTutoring(1, "Tutorial 1-3");
+
+        mydb.insertTutoring(2, "Tutorial 2-1");
+        mydb.insertTutoring(2, "Tutorial 2-2");
+        mydb.insertTutoring(2, "Tutorial 2-3");
+
+        mydb.insertTutoring(3, "Tutorial 3-1");
+        mydb.insertTutoring(3, "Tutorial 3-2");
+        mydb.insertTutoring(3, "Tutorial 3-3");
     }
 
     private void forumsSQL(){
         mydb.insertForum("nick@aol.com", "Help with Data Structures", "I need help understanding the concept of Big O. Like how do you measure the time complexity of an algorithm?");
     }
 
-//    private void assignmentsSQL() {
-//        mydb.deleteAssignment(1, 1, 1, 0, 0);
-//    }
+    private void assignmentsSQL() {
+        mydb.insertAssignment(1, "Assignment 1-1");
+        mydb.insertAssignment(1, "Assignment 1-2");
+        mydb.insertAssignment(1, "Assignment 1-3");
+
+        mydb.insertAssignment(2, "Assignment 2-1");
+        mydb.insertAssignment(2, "Assignment 2-2");
+        mydb.insertAssignment(2, "Assignment 2-3");
+
+        mydb.insertAssignment(3, "Assignment 3-1");
+        mydb.insertAssignment(3, "Assignment 3-2");
+        mydb.insertAssignment(3, "Assignment 3-3");
+    }
 
     public static final String ASSIGNMENTS_TABLE = "Assignments";
     public static final String ASSIGNMENTS_C_ID = "Assignment_ID";

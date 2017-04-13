@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class FragmentCourse extends Fragment {
     private DBHandler mydb;
     private ListView listViewAssignments;
     private ListView listViewTutoring;
+    private int courseId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,7 +58,7 @@ public class FragmentCourse extends Fragment {
         mSpec.setIndicator("Tutoring");
         mTabHost.addTab(mSpec);
 
-        ArrayList<String> listAssigments = mydb.getAllClasses();
+        ArrayList<String> listAssigments = mydb.getAllAssigmentsByCourseId(courseId + 1);
         String[] listItemsAssignments = new String[listAssigments.size()];
         for (int i = 0; i < listAssigments.size(); i++) {
             listItemsAssignments[i] = listAssigments.get(i);
@@ -64,7 +66,7 @@ public class FragmentCourse extends Fragment {
         ArrayAdapter adapterAssignments = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItemsAssignments);
         listViewAssignments.setAdapter(adapterAssignments);
 
-        ArrayList<String> listTutoring = mydb.getAllClasses();
+        ArrayList<String> listTutoring = mydb.getAllTutoringByCourseId(courseId + 1);
         String[] listItemsTutoring = new String[listTutoring.size()];
         for (int i = 0; i < listTutoring.size(); i++) {
             listItemsTutoring[i] = listTutoring.get(i);
@@ -93,19 +95,22 @@ public class FragmentCourse extends Fragment {
         });
     }
 
+    private void debug() {
+        Toast.makeText(root.getContext().getApplicationContext(),"ID: " + courseId, Toast.LENGTH_LONG).show();
+    }
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param courseId Parameter 1.
      * @return A new instance of fragment FragmentDashboard.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentCourse newInstance(String param1, String param2) {
+    public static FragmentCourse newInstance(int courseId) {
         FragmentCourse fragment = new FragmentCourse();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+        args.putInt("COURSE_ID", courseId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -113,6 +118,9 @@ public class FragmentCourse extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            courseId = getArguments().getInt("COURSE_ID");
+        }
     }
 
     @Override
@@ -122,6 +130,7 @@ public class FragmentCourse extends Fragment {
         root = rootView;
         setupFrag();
         run();
+        debug();
         return rootView;
     }
 

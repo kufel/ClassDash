@@ -61,8 +61,9 @@ public class FragmentCourses extends Fragment {
 //        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                FragmentCourse nextFrag = new FragmentCourse();
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+                System.out.println(pos + ", " + arg3);
+                FragmentCourse nextFrag = FragmentCourse.newInstance(pos);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -83,7 +84,7 @@ public class FragmentCourses extends Fragment {
     public static FragmentCourses newInstance(String param1, String param2) {
         FragmentCourses fragment = new FragmentCourses();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+        args.putString("COURSE_ID", param1);
         fragment.setArguments(args);
         return fragment;
     }

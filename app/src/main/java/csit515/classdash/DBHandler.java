@@ -29,17 +29,23 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public static final String CLASSES_TABLE = "Classes";
     public static final String CLASSES_C_ID = "ID";
-    public static final String CLASSES_C_NAME = "NAME";
+    public static final String CLASSES_C_NAME = "Name";
     public static final String CLASSES_C_TEACHERID = "Teacher_ID";
     public static final String CLASSES_C_ASSIGNMENTS = "Assignments";
     public static final String CLASSES_C_TUTORMAT = "Tutoring_Material";
 
     public static final String ASSIGNMENTS_TABLE = "Assignments";
     public static final String ASSIGNMENTS_C_ID = "Assignment_ID";
-    public static final String ASSIGNMENTS_C_STUID = "Student_ID";
-    public static final String ASSIGNMENTS_C_CLASSID = "Class_ID";
-    public static final String ASSIGNMENTS_C_COMP = "Complete";
-    public static final String ASSIGNMENTS_C_GRADE = "GRADE";
+    //public static final String ASSIGNMENTS_C_STUID = "Student_ID";
+    public static final String ASSIGNMENTS_C_COURSE_ID = "Course_ID";
+    public static final String ASSIGNMENTS_C_NAME = "Name";
+    //public static final String ASSIGNMENTS_C_COMP = "Complete";
+    //public static final String ASSIGNMENTS_C_GRADE = "GRADE";
+
+    public static final String TUTORING_TABLE = "Tutoring";
+    public static final String TUTORING_C_ID = "Assignment_ID";
+    public static final String TUTORING_C_COURSE_ID = "Course_ID";
+    public static final String TUTORING_C_NAME = "Name";
 
     public static final String ROSTER_TABLE = "Roster";
     public static final String ROSTER_C_CLASSID = "Class_ID";
@@ -84,12 +90,24 @@ public class DBHandler extends SQLiteOpenHelper {
                 CLASSES_C_TUTORMAT+" text)";
         db.execSQL(createTables);
 
-        createTables = "create table "+ASSIGNMENTS_TABLE+" ("+
-                ASSIGNMENTS_C_ID+" integer primary key, "+
-                ASSIGNMENTS_C_STUID+" integer, "+
-                ASSIGNMENTS_C_CLASSID+" integer, "+
-                ASSIGNMENTS_C_COMP+" integer, "+
-                ASSIGNMENTS_C_GRADE+ " real)";
+        createTables = "create table "+ASSIGNMENTS_TABLE+" "+
+                "("+ASSIGNMENTS_C_ID+" integer primary key, "+
+                ASSIGNMENTS_C_COURSE_ID+" integer, "+
+                ASSIGNMENTS_C_NAME+" text)";
+        db.execSQL(createTables);
+
+//        createTables = "create table "+ASSIGNMENTS_TABLE+" ("+
+//                ASSIGNMENTS_C_ID+" integer primary key, "+
+//                ASSIGNMENTS_C_STUID+" integer, "+
+//                ASSIGNMENTS_C_CLASSID+" integer, "+
+//                ASSIGNMENTS_C_COMP+" integer, "+
+//                ASSIGNMENTS_C_GRADE+ " real)";
+//        db.execSQL(createTables);
+
+        createTables = "create table "+TUTORING_TABLE+" "+
+                "("+TUTORING_C_ID+" integer primary key, "+
+                TUTORING_C_COURSE_ID+" integer, "+
+                TUTORING_C_NAME+" text)";
         db.execSQL(createTables);
 
         createTables = "create table "+ROSTER_TABLE+" ("+
@@ -120,6 +138,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+USERS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+CLASSES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ASSIGNMENTS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS "+TUTORING_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ROSTER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+FORUMS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+POSTS_TABLE);
@@ -246,32 +265,42 @@ public class DBHandler extends SQLiteOpenHelper {
         return list;
     }
 
-    public boolean insertAssignment(int stid, int cid, int comp, int grade){
+    public boolean insertAssignment(int cid, String name){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(ASSIGNMENTS_C_STUID, stid);
-        cv.put(ASSIGNMENTS_C_CLASSID, cid);
-        cv.put(ASSIGNMENTS_C_COMP, comp);
-        cv.put(ASSIGNMENTS_C_GRADE, grade);
+        cv.put(ASSIGNMENTS_C_COURSE_ID, cid);
+        cv.put(ASSIGNMENTS_C_NAME, name);
         db.insert(CLASSES_TABLE, null, cv);
         return true;
     }
 
-    public boolean updateClass(int id, int stid, int cid, int comp, double grade){
-        SQLiteDatabase db = this.getReadableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(ASSIGNMENTS_C_STUID, stid);
-        cv.put(ASSIGNMENTS_C_CLASSID, cid);
-        cv.put(ASSIGNMENTS_C_COMP, comp);
-        cv.put(ASSIGNMENTS_C_GRADE, grade);
-        db.update(CLASSES_TABLE, cv, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
-        return true;
-    }
+//    public boolean insertAssignment(int stid, int cid, int comp, int grade){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        ContentValues cv = new ContentValues();
+//        cv.put(ASSIGNMENTS_C_STUID, stid);
+//        cv.put(ASSIGNMENTS_C_CLASSID, cid);
+//        cv.put(ASSIGNMENTS_C_COMP, comp);
+//        cv.put(ASSIGNMENTS_C_GRADE, grade);
+//        db.insert(CLASSES_TABLE, null, cv);
+//        return true;
+//    }
 
-    public int deleteAssignment(int cid, int stid){
-        SQLiteDatabase db = this.getReadableDatabase();
-        return db.delete(CLASSES_TABLE, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
-    }
+
+//    public boolean updateClass(int id, int stid, int cid, int comp, double grade){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        ContentValues cv = new ContentValues();
+//        cv.put(ASSIGNMENTS_C_STUID, stid);
+//        cv.put(ASSIGNMENTS_C_CLASSID, cid);
+//        cv.put(ASSIGNMENTS_C_COMP, comp);
+//        cv.put(ASSIGNMENTS_C_GRADE, grade);
+//        db.update(CLASSES_TABLE, cv, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+//        return true;
+//    }
+
+//    public int deleteAssignment(int cid, int stid){
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        return db.delete(CLASSES_TABLE, ASSIGNMENTS_C_CLASSID+" = ? and "+ASSIGNMENTS_C_STUID+" = ?", new String[] { Integer.toString(cid), Integer.toString(stid) } );
+//    }
 
     public ArrayList<String> getAllAssigments(){
         ArrayList<String> list = new ArrayList<String>();
@@ -285,6 +314,21 @@ public class DBHandler extends SQLiteOpenHelper {
             res.moveToNext();
         }
         return list;
+    }
+
+    public ArrayList<String> getAllAssigmentsByCourseId(int courseId){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM " + ASSIGNMENTS_TABLE + " WHERE " + ASSIGNMENTS_C_COURSE_ID + " = " + courseId, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(ASSIGNMENTS_C_NAME)));
+            res.moveToNext();
+        }
+        return list;
+
     }
 
     public boolean insertRoster(int cid, int stid, int tid, double grade){
@@ -411,4 +455,26 @@ public class DBHandler extends SQLiteOpenHelper {
         return res;
     }
 
+    public boolean insertTutoring(int courseId, String name){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(TUTORING_C_COURSE_ID, courseId);
+        cv.put(TUTORING_C_NAME, name);
+        db.insert(TUTORING_TABLE, null, cv);
+        return true;
+    }
+
+    public ArrayList<String> getAllTutoringByCourseId(int courseId){
+        ArrayList<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM " + TUTORING_TABLE + " WHERE " + TUTORING_C_COURSE_ID + " = " + courseId, null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            list.add(res.getString(res.getColumnIndex(TUTORING_C_NAME)));
+            res.moveToNext();
+        }
+        return list;
+    }
 }
