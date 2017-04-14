@@ -58,10 +58,10 @@ public class FragmentCourse extends Fragment {
         mSpec.setIndicator("Tutoring");
         mTabHost.addTab(mSpec);
 
-        ArrayList<String> listAssigments = mydb.getAllAssigmentsByCourseId(courseId + 1);
-        String[] listItemsAssignments = new String[listAssigments.size()];
-        for (int i = 0; i < listAssigments.size(); i++) {
-            listItemsAssignments[i] = listAssigments.get(i);
+        ArrayList<String> listAssignments = mydb.getAllAssignmentByCourseId(courseId + 1);
+        String[] listItemsAssignments = new String[listAssignments.size()];
+        for (int i = 0; i < listAssignments.size(); i++) {
+            listItemsAssignments[i] = listAssignments.get(i);
         }
         ArrayAdapter adapterAssignments = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItemsAssignments);
         listViewAssignments.setAdapter(adapterAssignments);
@@ -75,8 +75,8 @@ public class FragmentCourse extends Fragment {
         listViewTutoring.setAdapter(adapterTutoring);
 
         listViewAssignments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                FragmentCourseAssignment nextFrag = new FragmentCourseAssignment();
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+                FragmentCourseAssignment nextFrag = FragmentCourseAssignment.newInstance(pos + 1);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -85,8 +85,8 @@ public class FragmentCourse extends Fragment {
         });
 
         listViewTutoring.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                FragmentCourseTutoring nextFrag = new FragmentCourseTutoring();
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+                FragmentCourseTutoring nextFrag = FragmentCourseTutoring.newInstance(pos + 1);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -130,7 +130,7 @@ public class FragmentCourse extends Fragment {
         root = rootView;
         setupFrag();
         run();
-        debug();
+        //debug();
         return rootView;
     }
 

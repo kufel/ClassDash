@@ -13,8 +13,12 @@ public class SQL {
         userSQL();
         classesSQL();
         tutoringSQL();
-        forumsSQL();
         assignmentsSQL();
+        forumsSQL();
+//
+//        mydb.insertTest(1, "test 1");
+//        mydb.insertTest(2, "test 2");
+//        mydb.insertTest(3, "test 3");
     }
 
     private void userSQL() {
@@ -61,10 +65,10 @@ public class SQL {
         mydb.insertAssignment(3, "Assignment 3-3");
     }
 
-    public static final String ASSIGNMENTS_TABLE = "Assignments";
-    public static final String ASSIGNMENTS_C_ID = "Assignment_ID";
-    public static final String ASSIGNMENTS_C_STUID = "Student_ID";
-    public static final String ASSIGNMENTS_C_CLASSID = "Class_ID";
-    public static final String ASSIGNMENTS_C_COMP = "Complete";
-    public static final String ASSIGNMENTS_C_GRADE = "GRADE";
+//    public static final String ASSIGNMENTS_TABLE = "Assignments";
+//    public static final String ASSIGNMENTS_C_ID = "Assignment_ID";
+//    public static final String ASSIGNMENTS_C_STUID = "Student_ID";
+//    public static final String ASSIGNMENTS_C_CLASSID = "Class_ID";
+//    public static final String ASSIGNMENTS_C_COMP = "Complete";
+//    public static final String ASSIGNMENTS_C_GRADE = "GRADE";
 }

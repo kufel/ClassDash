@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -20,6 +22,8 @@ import android.widget.ListView;
 public class FragmentCourseAssignment extends Fragment {
     private View root;
     private DBHandler mydb;
+    private int assignmentId;
+    private TextView textViewAssignmentId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -29,27 +33,32 @@ public class FragmentCourseAssignment extends Fragment {
 
     private void setupFrag() {
         mydb = new DBHandler(getActivity());
+        textViewAssignmentId = (TextView) root.findViewById(R.id.textViewAssignmentId);
     }
 
     private void loadSQL() {
     }
 
     private void run() {
+        textViewAssignmentId.setText("ID: " + assignmentId);
+    }
+
+    private void debug() {
+        Toast.makeText(root.getContext().getApplicationContext(),"ID: " + assignmentId, Toast.LENGTH_LONG).show();
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param assignmentId Parameter 1.
      * @return A new instance of fragment FragmentDashboard.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentCourseAssignment newInstance(String param1, String param2) {
+    public static FragmentCourseAssignment newInstance(int assignmentId) {
         FragmentCourseAssignment fragment = new FragmentCourseAssignment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+        args.putInt("ASSIGNMENT_ID", assignmentId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,6 +66,9 @@ public class FragmentCourseAssignment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            assignmentId = getArguments().getInt("ASSIGNMENT_ID");
+        }
     }
 
     @Override
@@ -67,6 +79,7 @@ public class FragmentCourseAssignment extends Fragment {
         setupFrag();
         loadSQL();
         run();
+        debug();
         return rootView;
     }
 

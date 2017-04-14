@@ -19,7 +19,7 @@ public class Login extends AppCompatActivity {
 
     private EditText emailtxt, passtxt;
     private Button loginbtn, regbtn;
-    private DBHandler mybd;
+    private DBHandler mydb;
     SharedPreferences shprefs;
     SharedPreferences.Editor editor;
     public static String SHPR = "CLASSDASHSHPREFS";
@@ -30,20 +30,19 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // clear db
-        DBHandler mydb = new DBHandler(this);
-        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
-        SQL sql = new SQL(mydb);
-
         Stetho.initializeWithDefaults(this);
 
         emailtxt = (EditText) findViewById(R.id.li_email_edittxt);
         passtxt = (EditText) findViewById(R.id.li_pass_edtxt);
         loginbtn = (Button) findViewById(R.id.li_login_btn);
         regbtn = (Button) findViewById(R.id.li_reg_btn);
-        mybd = new DBHandler(this);
+        mydb = new DBHandler(this);
         shprefs = getSharedPreferences(SHPR, MODE_APPEND);
         editor = shprefs.edit();
+
+        // clear db
+        mydb.onUpgrade(mydb.getWritableDatabase(), 1, 1);
+        SQL sql = new SQL(mydb);
 
         loginbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,9 +50,9 @@ public class Login extends AppCompatActivity {
                 boolean match = false;
 
                 String username = "";
-                ArrayList<String> lUsers = mybd.getAllUsers();
+                ArrayList<String> lUsers = mydb.getAllUsers();
                 for(String s:lUsers){
-                    Cursor rs = mybd.getUser(Integer.parseInt(s));
+                    Cursor rs = mydb.getUser(Integer.parseInt(s));
                     rs.moveToFirst();
                     String testEmail = rs.getString(rs.getColumnIndex(DBHandler.USERS_C_EMAIL));
                     String testPass = rs.getString(rs.getColumnIndex(DBHandler.USERS_C_PASSWORD));

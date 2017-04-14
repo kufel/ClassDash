@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -20,6 +23,8 @@ import android.widget.ListView;
 public class FragmentCourseTutoring extends Fragment {
     private View root;
     private DBHandler mydb;
+    private int tutoringId;
+    private TextView textViewTutoringId;
 
     private OnFragmentInteractionListener mListener;
 
@@ -29,27 +34,32 @@ public class FragmentCourseTutoring extends Fragment {
 
     private void setupFrag() {
         mydb = new DBHandler(getActivity());
+        textViewTutoringId = (TextView) root.findViewById(R.id.textViewTutoringId);
     }
 
     private void loadSQL() {
     }
 
     private void run() {
+        textViewTutoringId.setText("ID: " + tutoringId);
+    }
+
+    private void debug() {
+        Toast.makeText(root.getContext().getApplicationContext(),"ID: " + tutoringId, Toast.LENGTH_LONG).show();
     }
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param tutoringId Parameter 1.
      * @return A new instance of fragment FragmentDashboard.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentCourseTutoring newInstance(String param1, String param2) {
+    public static FragmentCourseTutoring newInstance(int tutoringId) {
         FragmentCourseTutoring fragment = new FragmentCourseTutoring();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+        args.putInt("TUTORING_ID", tutoringId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,6 +67,9 @@ public class FragmentCourseTutoring extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            tutoringId = getArguments().getInt("TUTORING_ID");
+        }
     }
 
     @Override
@@ -67,6 +80,7 @@ public class FragmentCourseTutoring extends Fragment {
         setupFrag();
         loadSQL();
         run();
+        debug();
         return rootView;
     }
 

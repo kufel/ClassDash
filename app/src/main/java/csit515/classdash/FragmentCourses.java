@@ -52,13 +52,6 @@ public class FragmentCourses extends Fragment {
     }
 
     private void run() {
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-//                Intent intent = new Intent(getActivity(), CourseActivity.class);
-//                intent.putExtra("course_id", arg3);
-//                startActivity(intent);
-//            }
-//        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
