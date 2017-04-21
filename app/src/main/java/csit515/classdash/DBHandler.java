@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
+import csit515.classdash.dto.Item;
 
 /**
  * Created by Rixoro on 2/27/2017.
@@ -319,15 +322,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return db.delete(CLASSES_TABLE, CLASSES_C_ID+" = ?", new String[] { Integer.toString(id) } );
     }
 
-    public ArrayList<String> getAllClasses(){
-        ArrayList<String> list = new ArrayList<String>();
+    public ArrayList<Item> getAllClasses(){
+        ArrayList<Item> list = new ArrayList<Item>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from "+CLASSES_TABLE, null );
+        Cursor res =  db.rawQuery( "select * from " + CLASSES_TABLE, null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(CLASSES_C_NAME)));
+            Item item = new Item();
+            item.setId(res.getInt(res.getColumnIndex(CLASSES_C_ID)));
+            item.setValue(res.getString(res.getColumnIndex(CLASSES_C_NAME)));
+            list.add(item);
             res.moveToNext();
         }
         return list;
@@ -387,15 +393,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public ArrayList<String> getAllTutoringByCourseId(int courseId){
-        ArrayList<String> list = new ArrayList<String>();
+    public ArrayList<Item> getAllTutoringByCourseId(int courseId){
+        ArrayList<Item> list = new ArrayList<Item>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT * FROM " + TUTORING_TABLE + " WHERE " + TUTORING_C_COURSE_ID + " = " + courseId, null );
+        Cursor res =  db.rawQuery( "SELECT * FROM " + TUTORING_TABLE + " WHERE " + TUTORING_C_COURSE_ID + " = " + courseId + " ORDER BY " + TUTORING_C_NAME + " ASC" , null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(TUTORING_C_NAME)));
+            Item item = new Item();
+            item.setId(res.getInt(res.getColumnIndex(TUTORING_C_ID)));
+            item.setValue(res.getString(res.getColumnIndex(TUTORING_C_NAME)));
+            list.add(item);
             res.moveToNext();
         }
         return list;
@@ -410,15 +419,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public ArrayList<String> getAllAssignmentByCourseId(int courseId){
-        ArrayList<String> list = new ArrayList<String>();
+    public ArrayList<Item> getAllAssignmentByCourseId(int courseId){
+        ArrayList<Item> list = new ArrayList<Item>();
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "SELECT * FROM " + ASSIGNMENT_TABLE + " WHERE " + ASSIGNMENT_C_COURSE_ID + " = " + courseId, null );
         res.moveToFirst();
 
         while(!res.isAfterLast()){
-            list.add(res.getString(res.getColumnIndex(ASSIGNMENT_C_NAME)));
+            Item item = new Item();
+            item.setId(res.getInt(res.getColumnIndex(ASSIGNMENT_C_ID)));
+            item.setValue(res.getString(res.getColumnIndex(ASSIGNMENT_C_NAME)));
+            list.add(item);
             res.moveToNext();
         }
         return list;

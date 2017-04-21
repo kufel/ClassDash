@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import csit515.classdash.dto.Item;
 
 
 /**
@@ -29,6 +32,7 @@ public class FragmentCourses extends Fragment {
     private View root;
     private DBHandler mydb;
     private ListView listView;
+    ArrayList<Item> list;
 
     private OnFragmentInteractionListener mListener;
 
@@ -42,21 +46,20 @@ public class FragmentCourses extends Fragment {
     }
 
     private void loadSQL() {
-        ArrayList<String> list = mydb.getAllClasses();
+        list = mydb.getAllClasses();
         String[] listItems = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            listItems[i] = list.get(i);
+            listItems[i] = list.get(i).getValue();
         }
         ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
     }
 
     private void run() {
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                System.out.println(pos + ", " + arg3);
-                FragmentCourse nextFrag = FragmentCourse.newInstance(pos);
+                int val = list.get(pos).getId();
+                FragmentCourse nextFrag = FragmentCourse.newInstance(val);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)

@@ -13,6 +13,9 @@ import android.widget.TabHost;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import csit515.classdash.dto.Item;
 
 
 /**
@@ -29,6 +32,8 @@ public class FragmentCourse extends Fragment {
     private ListView listViewAssignments;
     private ListView listViewTutoring;
     private int courseId;
+    ArrayList<Item> listAssignments;
+    ArrayList<Item> listTutoring;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,25 +63,26 @@ public class FragmentCourse extends Fragment {
         mSpec.setIndicator("Tutoring");
         mTabHost.addTab(mSpec);
 
-        ArrayList<String> listAssignments = mydb.getAllAssignmentByCourseId(courseId + 1);
+        listAssignments = mydb.getAllAssignmentByCourseId(courseId);
         String[] listItemsAssignments = new String[listAssignments.size()];
         for (int i = 0; i < listAssignments.size(); i++) {
-            listItemsAssignments[i] = listAssignments.get(i);
+            listItemsAssignments[i] = listAssignments.get(i).getValue();
         }
         ArrayAdapter adapterAssignments = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItemsAssignments);
         listViewAssignments.setAdapter(adapterAssignments);
 
-        ArrayList<String> listTutoring = mydb.getAllTutoringByCourseId(courseId + 1);
+        listTutoring = mydb.getAllTutoringByCourseId(courseId);
         String[] listItemsTutoring = new String[listTutoring.size()];
         for (int i = 0; i < listTutoring.size(); i++) {
-            listItemsTutoring[i] = listTutoring.get(i);
+            listItemsTutoring[i] = listTutoring.get(i).getValue();
         }
         ArrayAdapter adapterTutoring = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItemsTutoring);
         listViewTutoring.setAdapter(adapterTutoring);
 
         listViewAssignments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                FragmentCourseAssignment nextFrag = FragmentCourseAssignment.newInstance(pos + 1);
+                int val = listAssignments.get(pos).getId();
+                FragmentCourseAssignment nextFrag = FragmentCourseAssignment.newInstance(val);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -86,7 +92,8 @@ public class FragmentCourse extends Fragment {
 
         listViewTutoring.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
-                FragmentCourseTutoring nextFrag = FragmentCourseTutoring.newInstance(pos + 1);
+                int val = listTutoring.get(pos).getId();
+                FragmentCourseTutoring nextFrag = FragmentCourseTutoring.newInstance(val);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -130,7 +137,7 @@ public class FragmentCourse extends Fragment {
         root = rootView;
         setupFrag();
         run();
-        //debug();
+        debug();
         return rootView;
     }
 
