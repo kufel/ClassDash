@@ -41,11 +41,18 @@ public class DBHandler extends SQLiteOpenHelper {
     public static final String ASSIGNMENT_C_ID = "Assignment_ID";
     public static final String ASSIGNMENT_C_COURSE_ID = "Course_ID";
     public static final String ASSIGNMENT_C_NAME = "Name";
+    public static final String ASSIGNMENT_C_DESCRIPTION = "Description";
 
     public static final String TUTORING_TABLE = "Tutoring";
     public static final String TUTORING_C_ID = "Assignment_ID";
     public static final String TUTORING_C_COURSE_ID = "Course_ID";
     public static final String TUTORING_C_NAME = "Name";
+    public static final String TUTORING_C_DESCRIPTION = "Description";
+
+    public static final String FILE_TABLE = "File";
+    public static final String FILE_C_ID = "File_ID";
+    public static final String FILE_C_TUTORING_ID = "Tutoring_ID";
+    public static final String FILE_C_NAME = "Name";
 
     public static final String ROSTER_TABLE = "Roster";
     public static final String ROSTER_C_CLASSID = "Class_ID";
@@ -93,13 +100,21 @@ public class DBHandler extends SQLiteOpenHelper {
         createTables = "create table "+ASSIGNMENT_TABLE+" "+
                 "("+ASSIGNMENT_C_ID+" integer primary key, "+
                 ASSIGNMENT_C_COURSE_ID+" integer, "+
-                ASSIGNMENT_C_NAME+" text)";
+                ASSIGNMENT_C_NAME+" text, " +
+                ASSIGNMENT_C_DESCRIPTION + " text)";
         db.execSQL(createTables);
 
         createTables = "create table "+TUTORING_TABLE+" "+
                 "("+TUTORING_C_ID+" integer primary key, "+
                 TUTORING_C_COURSE_ID+" integer, "+
-                TUTORING_C_NAME+" text)";
+                TUTORING_C_NAME+" text," +
+                TUTORING_C_DESCRIPTION+" text)";
+        db.execSQL(createTables);
+
+        createTables = "create table "+FILE_TABLE+" "+
+                "("+FILE_C_ID+" integer primary key, "+
+                FILE_C_TUTORING_ID+" integer," +
+                FILE_C_NAME+" text)";
         db.execSQL(createTables);
 
         createTables = "create table "+ROSTER_TABLE+" ("+
@@ -131,6 +146,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+CLASSES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ASSIGNMENT_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+TUTORING_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS "+FILE_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+ROSTER_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+FORUMS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS "+POSTS_TABLE);
@@ -384,11 +400,12 @@ public class DBHandler extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean insertTutoring(int courseId, String name){
+    public boolean insertTutoring(int courseId, String name, String description){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(TUTORING_C_COURSE_ID, courseId);
         cv.put(TUTORING_C_NAME, name);
+        cv.put(TUTORING_C_DESCRIPTION, description);
         db.insert(TUTORING_TABLE, null, cv);
         return true;
     }
@@ -404,17 +421,64 @@ public class DBHandler extends SQLiteOpenHelper {
             Item item = new Item();
             item.setId(res.getInt(res.getColumnIndex(TUTORING_C_ID)));
             item.setValue(res.getString(res.getColumnIndex(TUTORING_C_NAME)));
+            item.setDescription(" ");
             list.add(item);
             res.moveToNext();
         }
         return list;
     }
 
-    public boolean insertAssignment(int courseId, String name){
+    public ArrayList<Item> getAllTutoringByTutoringId(int tutoringId){
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM " + TUTORING_TABLE + " WHERE " + TUTORING_C_ID + " = " + tutoringId + " ORDER BY " + TUTORING_C_NAME + " ASC" , null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            Item item = new Item();
+            item.setId(res.getInt(res.getColumnIndex(TUTORING_C_ID)));
+            item.setValue(res.getString(res.getColumnIndex(TUTORING_C_NAME)));
+            item.setDescription(" ");
+            list.add(item);
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertFile(int tutorialId, String name){
+        SQLiteDatabase db = this.getReadableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(FILE_C_TUTORING_ID, tutorialId);
+        cv.put(FILE_C_NAME, name);
+        db.insert(FILE_TABLE, null, cv);
+        return true;
+    }
+
+    public ArrayList<Item> getAllFilesByTutoringId(int tutoringId){
+        ArrayList<Item> list = new ArrayList<Item>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "SELECT * FROM " + FILE_TABLE + " WHERE " + FILE_C_TUTORING_ID + " = " + tutoringId + " ORDER BY " + FILE_C_ID + " ASC" , null );
+        res.moveToFirst();
+
+        while(!res.isAfterLast()){
+            Item item = new Item();
+            item.setId(res.getInt(res.getColumnIndex(FILE_C_ID)));
+            item.setValue(res.getString(res.getColumnIndex(FILE_C_NAME)));
+            item.setDescription("");
+            list.add(item);
+            res.moveToNext();
+        }
+        return list;
+    }
+
+    public boolean insertAssignment(int courseId, String name, String description){
         SQLiteDatabase db = this.getReadableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(ASSIGNMENT_C_COURSE_ID, courseId);
         cv.put(ASSIGNMENT_C_NAME, name);
+        cv.put(ASSIGNMENT_C_DESCRIPTION, description);
         db.insert(ASSIGNMENT_TABLE, null, cv);
         return true;
     }
@@ -430,6 +494,7 @@ public class DBHandler extends SQLiteOpenHelper {
             Item item = new Item();
             item.setId(res.getInt(res.getColumnIndex(ASSIGNMENT_C_ID)));
             item.setValue(res.getString(res.getColumnIndex(ASSIGNMENT_C_NAME)));
+            item.setDescription(res.getString(res.getColumnIndex(ASSIGNMENT_C_DESCRIPTION)));
             list.add(item);
             res.moveToNext();
         }

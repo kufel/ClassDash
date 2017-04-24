@@ -82,7 +82,8 @@ public class FragmentCourse extends Fragment {
         listViewAssignments.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
                 int val = listAssignments.get(pos).getId();
-                FragmentCourseAssignment nextFrag = FragmentCourseAssignment.newInstance(val);
+                String description = listAssignments.get(pos).getDescription();
+                FragmentCourseAssignment nextFrag = FragmentCourseAssignment.newInstance(val, description);
                 getActivity().getFragmentManager().beginTransaction()
                         .replace(R.id.mainFrame, nextFrag, null)
                         .addToBackStack(null)
@@ -137,7 +138,7 @@ public class FragmentCourse extends Fragment {
         root = rootView;
         setupFrag();
         run();
-        debug();
+        //debug();
         return rootView;
     }
 

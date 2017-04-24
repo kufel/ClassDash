@@ -9,21 +9,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Assignment Page" />
+        android:orientation="vertical"
+        android:weightSum="1">
 
         <TextView
             android:id="@+id/textViewAssignmentId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textViewAssignment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView"
+            android:layout_weight="0.31" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="193dp"
+            android:layout_height="wrap_content"
+            android:text="Upload" />
+
     </LinearLayout>
 
 </FrameLayout>

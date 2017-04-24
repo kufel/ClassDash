@@ -6,10 +6,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import csit515.classdash.dto.Item;
 
 
 /**
@@ -25,6 +31,8 @@ public class FragmentCourseTutoring extends Fragment {
     private DBHandler mydb;
     private int tutoringId;
     private TextView textViewTutoringId;
+    private ListView listViewFile;
+    ArrayList<Item> listFiles;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,17 +43,32 @@ public class FragmentCourseTutoring extends Fragment {
     private void setupFrag() {
         mydb = new DBHandler(getActivity());
         textViewTutoringId = (TextView) root.findViewById(R.id.textViewTutoringId);
+        listViewFile = (ListView) root.findViewById(R.id.listViewFile);
     }
 
     private void loadSQL() {
     }
 
     private void run() {
-        textViewTutoringId.setText("ID: " + tutoringId);
+        textViewTutoringId.setText("Tutorial: " + tutoringId);
+
+        listFiles = mydb.getAllFilesByTutoringId(tutoringId);
+        String[] listItemsFiles = new String[listFiles.size()];
+        for (int i = 0; i < listFiles.size(); i++) {
+            listItemsFiles[i] = listFiles.get(i).getValue();
+        }
+        ArrayAdapter adapterAssignments = new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, listItemsFiles);
+        listViewFile.setAdapter(adapterAssignments);
+
+        listViewFile.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int pos, long arg3) {
+                Toast.makeText(root.getContext().getApplicationContext(), "Loading...", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void debug() {
-        Toast.makeText(root.getContext().getApplicationContext(),"ID: " + tutoringId, Toast.LENGTH_LONG).show();
+        //Toast.makeText(root.getContext().getApplicationContext(),"ID: " + tutoringId, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -80,7 +103,7 @@ public class FragmentCourseTutoring extends Fragment {
         setupFrag();
         loadSQL();
         run();
-        debug();
+        //debug();
         return rootView;
     }
 
