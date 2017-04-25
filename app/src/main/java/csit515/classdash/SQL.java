@@ -35,9 +35,9 @@ public class SQL {
     }
 
     private void assignmentsSQL() {
-        mydb.insertAssignment(1, "Assignment 1", "A long description.");
-        mydb.insertAssignment(1, "Assignment 2", "A long description.");
-        mydb.insertAssignment(1, "Assignment 3", "A long description.");
+        mydb.insertAssignment(1, "Assignment 1", "Write a short feasibility report that describes the project that you have selected. The exact form of the report is up to you, but it should be well written and suitable to present to an external client. The length is likely to be between five and ten pages.");
+        mydb.insertAssignment(1, "Assignment 2", "During the semester each team will give three presentations with associated reports on the work completed. You will make a 45 minute presentation to the client, the Instructor and the Teaching Assistant assigned to your project.  Everybody is expected to be a presenter at least once.");
+        mydb.insertAssignment(1, "Assignment 3", "The final presentation and documentation will follow the same format as the others, except that you have an extra week to complete your documentation.   You will make a 45 minute presentation to the client, the Instructor and the Teaching Assistant assigned to your project.  Remember that everybody is expected to be a presenter at least once during the semester.");
 
         mydb.insertAssignment(2, "Assignment 1", "1. What are categorical and numerical variables? What is statistical distribution? \n" +
                                                 "2. Know the corresponding graphical method to display the distributions for each type variable.\n" +
@@ -50,9 +50,17 @@ public class SQL {
                                                 "2. Know how to computer marginal distribution \n" +
                                                 "3. Know how to compute conditional distribution and use it to summarize the relation-ship between two categorical variables.");
 
-        mydb.insertAssignment(3, "Assignment 1", "A long description.");
-        mydb.insertAssignment(3, "Assignment 2", "A long description.");
-        mydb.insertAssignment(3, "Assignment 3", "A long description.");
+        mydb.insertAssignment(3, "Assignment 1", "A person starts running with a constant velocity trying to catch a streetcar that is initially\n" +
+                                                "2.0 × 10^1\n" +
+                                                "m away from a person and has just started to accelerate from rest with a constant\n" +
+                                                "acceleration of 0.9 ms^2. The person runs just fast enough to catch the streetcar and hop on. ");
+        mydb.insertAssignment(3, "Assignment 2", "In a recent publication of Nature, Australian scientists determined that during the last ice age\n" +
+                                                "(22,000 to 19,000 years ago) the sea level reached its low point, 425 to 440 feet below the\n" +
+                                                "present level due to the change of sea water to glacial ice.\n" +
+                                                "a) What approximate volume of ice would this correspond to?\n" +
+                                                "b) If this additional ice were evenly divided between the polar ice caps, estimate how far the\n" +
+                                                "northern hemisphere ice sheet would extend southward. ");
+        //mydb.insertAssignment(3, "Assignment 3", "A long description.");
     }
 
     private void tutoringSQL() {
